@@ -1,5 +1,4 @@
-# Imported from findAVenue.py to find venue data to populate our
-# database with.
+# Imported from findAVenue.py to find venue data to populate our 
 from findAVenue import findAVenue
 # Database object classes Base and Venue from models.py are used to fulfill
 # client requests.
@@ -9,16 +8,16 @@ from model import Base, Venue
 # front end (jsnoify), and get and update data from database/to endpoints.
 from flask import Flask, jsonify, request
 
-# Imported to complete queries of database and establish relationships between
+# Imported to complete queries of database and establish relationships between 
 # tables in database.
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 
-import sys
-import codecs
-sys.stdout = codecs.getwriter('utf8')(sys.stdout)
-sys.stderr = codecs.getwriter('utf8')(sys.stderr)
+# import sys
+# import codecs
+# sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+# sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 
 
 # API Keys
@@ -34,13 +33,14 @@ engine = create_engine('sqlite:///venues.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 # Imported for SQLAlchemy queries and requests.
-session = DBSession()
+
+session = DBSession() 
 # Instantiate Flask app.
 app = Flask(__name__)
 
 # App decorator to set up venue route that accepts 'GET' (show) and 'POST'
 # (update) method requests.
-@app.route('/venues', methods=['GET', 'POST'])
+@app.route('/venues', methods = ['GET', 'POST'])
 def all_venues_handler():
     # Return all venuess in database.
     # If request method is GET, run a query on the database's Venue table
@@ -142,3 +142,4 @@ def venue_handler(id):
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
+
