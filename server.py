@@ -1,5 +1,4 @@
 # Imported from findAVenue.py to find venue data to populate our 
-# database with.
 from findAVenue import findAVenue
 # Database object classes Base and Venue from models.py are used to fulfill
 # client requests.
@@ -26,14 +25,15 @@ foursquare_client_id = 'QVY0YIACTYI30DRWLK4ZUNT1KFQHAPGPOBKEM5DYWL0CLEJN'
 foursquare_client_secret = 'WRCP40LWD1NO0KUEGWINKMQNWO5HCSM4TYUDZCHUMYEMTIKP'
 google_api_key = 'AIzaSyBKoTTTlfbbk0wKLFISgiJx_4jCYOdLwZs'
 
-# Create engine by referencing SQLite database venues.db created with 
+# Create engine by referencing SQLite database venues.db created with
 # models.py.  Alternative: PostgreSQL.
-engine = create_engine('sqlite:///venues.db') 
+engine = create_engine('sqlite:///venues.db')
 
 # Prepare database for use in app (connect to app).
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 # Imported for SQLAlchemy queries and requests.
+
 session = DBSession() 
 # Instantiate Flask app.
 app = Flask(__name__)
@@ -49,35 +49,35 @@ def all_venues_handler():
         venues = session.query(Venue).all()
         print(venues)
 
-        # Query results (variable venues which is a list data type) are 
-        # serialized, or, made into a dictionary then added to a list via a list 
+        # Query results (variable venues which is a list data type) are
+        # serialized, or, made into a dictionary then added to a list via a list
         # comprehension.  This list is then jsonfied for injestion by front end.
-        return jsonify(venues = [i.serialize for i in venues])
+        return jsonify(venues=[i.serialize for i in venues])
 
     # Make a new venue and store it in the database.
     elif request.method == 'POST':
         # Flask.Request.args creates a MultiDict (dictionary subclass customized
-        # to deal with multiple values for the same key which, is used by the 
-        # parsing functions in the wrappers. This is necessary because some HTML 
-        # form elements pass multiple values for the same key.) with the parsed 
+        # to deal with multiple values for the same key which, is used by the
+        # parsing functions in the wrappers. This is necessary because some HTML
+        # form elements pass multiple values for the same key.) with the parsed
         # contents of the query string (strings in the URL after the "?").
         # Prototype: get(key, default=None, type=None)
-        location = request.args.get('location', '') 
+        location = request.args.get('location', '')
         venueType = request.args.get('mealType', '')
 
-        # Create venue_info variable by calling the imported 
+        # Create venue_info variable by calling the imported
         # findAVenue function.
         venue_info = findAVenue(venueType, location)
 
-        # If there is venue info, create a venue variable that is 
-        # equal to the instantiation of the Venue Class defined in our 
+        # If there is venue info, create a venue variable that is
+        # equal to the instantiation of the Venue Class defined in our
         # model(models.py).
         if venue_info != "No Venues Found":
             venue = Venue(venue_name=unicode(venue_info['name']),
-                                    venue_address=unicode(venue_info['address']),
-                                    venue_image = venue_info['image'])
+                          venue_address=unicode(venue_info['address']),
+                          venue_image=venue_info['image'])
             # Add venue variable just created to session.
-            session.add(venue) 
+            session.add(venue)
             # Commit VEnue instance (venue variable created) to db.
             session.commit()
 
@@ -85,10 +85,10 @@ def all_venues_handler():
             # via the Venue serialize attribute method.
             return jsonify(venue=venue.serialize)
         else:
-            # If no venue data resulted from running findAVenue on 
-            # the meal type and location passed in the address bar upon url 
+            # If no venue data resulted from running findAVenue on
+            # the meal type and location passed in the address bar upon url
             # request, return error message.
-            return jsonify({"error":f"No Venues Found for {venueType} in {location}"})
+            return jsonify({"error": f"No Venues Found for {venueType} in {location}"})
 
 # Delete is in red to emphasize impact.
 @app.route('/venues/<int:id>', methods=['GET', 'PUT', 'DELETE'])
@@ -104,10 +104,10 @@ def venue_handler(id):
     elif request.method == 'PUT':
         # Update a specific venue.
         # Method request.args.get is not passed a 2nd parameter of an empty
-        # string since we know forsure the venue object being requested is 
-        # in the database and has an address (actual or empty string) as we are 
+        # string since we know forsure the venue object being requested is
+        # in the database and has an address (actual or empty string) as we are
         # only updating the lineitem in the database (PUT request).
-        address = request.args.get('address') 
+        address = request.args.get('address')
         image = request.args.get('image')
         name = request.args.get('name')
 
@@ -122,7 +122,7 @@ def venue_handler(id):
         session.commit()
 
         # Jsonify the result of the venue variable that is serialized after
-        # applying the serialize method attribute on it. 
+        # applying the serialize method attribute on it.
         return jsonify(venue=venue.serialize)
 
     elif request.method == 'DELETE':
@@ -136,9 +136,10 @@ def venue_handler(id):
         return "Venue Deleted"
 
 
-################################################################################
+###############################################################################
 # To run app at command line.  Debug mode is on.  Web local host # is 0.0.0.0
 # and the port to run app on is 5000.
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
+
