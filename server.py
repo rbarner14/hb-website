@@ -45,17 +45,18 @@ def all_venues_handler():
     # Return all venuess in database.
     # If request method is GET, run a query on the database's Venue table
     # (Class) for all venues. Return value is a list of Venue objects.
+    # if request.method == 'GET':
+
+    #     venues = session.query(Venue).all()
+    #     print(venues)
+
+    #     # Query results (variable venues which is a list data type) are
+    #     # serialized, or, made into a dictionary then added to a list via a list
+    #     # comprehension.  This list is then jsonfied for injestion by front end.
+    #     return jsonify(venues=[i.serialize for i in venues])
+
+    # # Make a new venue and store it in the database.
     if request.method == 'GET':
-        venues = session.query(Venue).all()
-        print(venues)
-
-        # Query results (variable venues which is a list data type) are
-        # serialized, or, made into a dictionary then added to a list via a list
-        # comprehension.  This list is then jsonfied for injestion by front end.
-        return jsonify(venues=[i.serialize for i in venues])
-
-    # Make a new venue and store it in the database.
-    elif request.method == 'POST':
         # Flask.Request.args creates a MultiDict (dictionary subclass customized
         # to deal with multiple values for the same key which, is used by the
         # parsing functions in the wrappers. This is necessary because some HTML
@@ -63,32 +64,32 @@ def all_venues_handler():
         # contents of the query string (strings in the URL after the "?").
         # Prototype: get(key, default=None, type=None)
         location = request.args.get('location', '')
-        venueType = request.args.get('mealType', '')
+        features = request.args.get('features', '')
 
         # Create venue_info variable by calling the imported
         # findAVenue function.
-        venue_info = findAVenue(venueType, location)
+        venue_info = findAVenue(features, location)
 
         # If there is venue info, create a venue variable that is
         # equal to the instantiation of the Venue Class defined in our
         # model(models.py).
         if venue_info != "No Venues Found":
-            venue = Venue(venue_name=unicode(venue_info['name']),
-                          venue_address=unicode(venue_info['address']),
+            venue = Venue(venue_name=venue_info['name'],
+                          venue_address=venue_info['address'],
                           venue_image=venue_info['image'])
             # Add venue variable just created to session.
-            session.add(venue)
-            # Commit VEnue instance (venue variable created) to db.
-            session.commit()
+            # session.add(venue)
+            # Commit Venue instance (venue variable created) to db.
+            # session.commit()
 
             # Return jsonified dictionary that results when object is serialized
             # via the Venue serialize attribute method.
             return jsonify(venue=venue.serialize)
         else:
             # If no venue data resulted from running findAVenue on
-            # the meal type and location passed in the address bar upon url
+            # the feature and location passed in the address bar upon url
             # request, return error message.
-            return jsonify({"error": f"No Venues Found for {venueType} in {location}"})
+            return jsonify({"error": f"No Venues Found for {features} in {location}"})
 
 # Delete is in red to emphasize impact.
 @app.route('/venues/<int:id>', methods=['GET', 'PUT', 'DELETE'])
