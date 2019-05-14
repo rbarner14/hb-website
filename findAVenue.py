@@ -46,7 +46,7 @@ def findAVenue(features, location):
     # function with the location of search passed into it called.  Bind 
     # latitude to the first item in tuple and longitude to the 2nd.
     latitude, longitude = getGeocodeLocation(location)
-    # Create URL with latitude, longitude, API keys and meal type.
+    # Create URL with latitude, longitude, API keys and features.
     url = (f'https://api.foursquare.com/v2/venues/search?client_id={foursquare_client_id}&client_secret={foursquare_client_secret}&v=20190513&ll={latitude},{longitude}&features={features}')
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
@@ -68,7 +68,7 @@ def findAVenue(features, location):
         venue_address = address
         
         # Get a  300x300 picture of the venue using the venue_id (you can change this by altering the 300x300 value in the URL or replacing it with 'orginal' to get the original picture
-        url = (f'https://api.foursquare.com/v2/venues/{venue_id}/photos?client_id={foursquare_client_id}&v=20130815&client_secret={foursquare_client_secret}')
+        url = (f'https://api.foursquare.com/v2/venues/{venue_id}/photos?client_id={foursquare_client_id}&v=20190513&client_secret={foursquare_client_secret}')
         result = json.loads(h.request(url, 'GET')[1])
         
         # Grab the first image.
