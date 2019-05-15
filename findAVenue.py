@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import json 
-import httplib2 # Imported to make HTTP requests.
+# import httplib2 # Imported to make HTTP requests.
+import requests
 
 # Imported to enable non-ascii characters (non-English language) to render 
 # properly in code.
@@ -25,12 +26,15 @@ def getGeocodeLocation(inputString):
     url = ('https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s'% (locationString, google_api_key))
     # print(url) 
     # Create Http Class instance and name this object 'h'. 
-    h = httplib2.Http()
+    # h = httplib2.Http()
     # h.request(url,'GET') is a get request on the URL passed in.  The response
     # is a list of 2 items: the first, the status code & message, the 2nd, is
     # the requested info.  This is then jsonified with the loads method imported
     # from the json library and stored as the variable "result".
-    result = json.loads(h.request(url,'GET')[1])
+    # result = json.loads(h.request(url,'GET')[1])
+
+    # or with: 
+    result = requests.get(url).json()
 
     # The json result is parsed for the data we need: lat & lng.
     latitude = result['results'][0]['geometry']['location']['lat']
@@ -50,8 +54,10 @@ def findAVenue(features, location):
     latitude, longitude = getGeocodeLocation(location)
     # Create URL with latitude, longitude, API keys and features.
     url = (f'https://api.foursquare.com/v2/venues/search?client_id={foursquare_client_id}&client_secret={foursquare_client_secret}&v=20190513&ll={latitude},{longitude}&features={features}')
-    h = httplib2.Http()
-    result = json.loads(h.request(url, 'GET')[1])
+    # h = httplib2.Http()
+    # result = json.loads(h.request(url, 'GET')[1])
+
+    result = requests.get(url).json()
 
     # Return restaurant info diction if a restaurant that matches search exists;
     # return "No Restaraunts Found" otherwise.
@@ -71,7 +77,9 @@ def findAVenue(features, location):
         
         # Get a  300x300 picture of the venue using the venue_id (you can change this by altering the 300x300 value in the URL or replacing it with 'orginal' to get the original picture
         url = (f'https://api.foursquare.com/v2/venues/{venue_id}/photos?client_id={foursquare_client_id}&v=20190513&client_secret={foursquare_client_secret}')
-        result = json.loads(h.request(url, 'GET')[1])
+        # result = json.loads(h.request(url, 'GET')[1])
+
+        result = requests.get(url).json()
         
         # Grab the first image.
         # If no image available, insert default image url.
