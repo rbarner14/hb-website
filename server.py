@@ -49,7 +49,6 @@ def all_venues_handler():
     # If request method is GET, run a query on the database's Venue table
     # (Class) for all venues. Return value is a list of Venue objects.
     # if request.method == 'GET':
-
     #     venues = session.query(Venue).all()
     #     print(venues)
 
@@ -57,7 +56,7 @@ def all_venues_handler():
     #     # serialized, or, made into a dictionary then added to a list via a list
     #     # comprehension.  This list is then jsonfied for injestion by front end.
     #     return jsonify(venues=[i.serialize for i in venues])
-
+    
     # # Make a new venue and store it in the database.
     if request.method == 'GET':
         # Flask.Request.args creates a MultiDict (dictionary subclass customized
