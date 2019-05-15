@@ -9,10 +9,12 @@ import httplib2 # Imported to make HTTP requests.
 # sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 # sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 
+import os
+
 # API Keys
-foursquare_client_id = 'QVY0YIACTYI30DRWLK4ZUNT1KFQHAPGPOBKEM5DYWL0CLEJN'
-foursquare_client_secret = 'WRCP40LWD1NO0KUEGWINKMQNWO5HCSM4TYUDZCHUMYEMTIKP'
-google_api_key = 'AIzaSyBKoTTTlfbbk0wKLFISgiJx_4jCYOdLwZs'
+foursquare_client_id = os.environ.get('FORSQUARE_CLIENT_ID')
+foursquare_client_secret = os.environ.get('FORSQUARE_CLIENT_SECRET')
+google_api_key = os.environ.get('GOOLE_API_KEY')
 
 # Geocode location (return coordinates of a location) by passing in search 
 # string and creating a Google API GET request.

@@ -14,6 +14,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 
+# To load api keys in shell.
+import os
+
 # import sys
 # import codecs
 # sys.stdout = codecs.getwriter('utf8')(sys.stdout)
@@ -21,9 +24,9 @@ from sqlalchemy import create_engine
 
 
 # API Keys
-foursquare_client_id = 'QVY0YIACTYI30DRWLK4ZUNT1KFQHAPGPOBKEM5DYWL0CLEJN'
-foursquare_client_secret = 'WRCP40LWD1NO0KUEGWINKMQNWO5HCSM4TYUDZCHUMYEMTIKP'
-google_api_key = 'AIzaSyBKoTTTlfbbk0wKLFISgiJx_4jCYOdLwZs'
+foursquare_client_id = os.environ.get('FORSQUARE_CLIENT_ID')
+foursquare_client_secret = os.environ.get('FORSQUARE_CLIENT_SECRET')
+google_api_key = os.environ.get('GOOLE_API_KEY')
 
 # Create engine by referencing SQLite database venues.db created with
 # models.py.  Alternative: PostgreSQL.
